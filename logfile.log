@@ -1,1 +1,89 @@
 archivo log
+
+debian doc:
+https://www.debian.org/doc/
+	-- instalation Guide https://www.debian.org/releases/stable/amd64/ (esp: https://www.debian.org/releases/stable/amd64/index.es.html)
+
+SELinux
+AppArmor
+LVM
+	- (al menos dos particiones cifradas)
+wall
+cron
+configurar particiones
+
+aptitude vs apt
+	-- aptitude
+	-- apt
+
+SSH
+	-- como funciona
+ -- service on 4242 port
+ -- no conectarse como root a travez de SSH
+
+ crear nuevo usuario
+
+ UFW
+	-- what is and how to config: https://www.swhosting.com/en/comunidad/manual/what-is-the-ufw-firewall-and-how-to-configure-it-in-linux
+	-- dejar solo el puerto 4242 abierto
+
+hostname: [usr]42
+	-- como modificar el hostname? 
+		--- cortito y al pie: https://www.redhat.com/en/blog/configure-hostname-linux
+		--- mas explicado: https://cyberpanel.net/blog/linux-change-hostname
+
+politica de contrasennas:
+	-- implementar politica:
+		-- debe expirar cada:									30 	dias
+		-- min dias para antes de modificar una contrasenna:	2 	dias
+		-- antelacion aviso antes de expirar password:			7	dias
+		-- password
+			- min:
+				- 10 caracteres
+				- 1 mayus
+				- 1 minuscula
+				- 1 numero
+			- No mas de 3 veces consecutivas el mismo caracter
+			- no puede contener el nombre de usuario
+			- (no aplica a root) al menos 7 caracteres no tienen que ser parte de la antigua contrasenna
+
+SUDO
+	-- instalar
+	-- configurar
+		-- reglas
+			- autentificacion limitado a 3 intentos con password incorrecta
+			- mostrar mensaje personalizado al introducir password incorrecto
+			- input y output logged en /var/log/sudo/
+			- TTY activado
+				- TTY in Unix is from teletypewriter
+			- los directorios utilizables por sudo deben estar restringidos
+
+usuario
+	-- crear usuario
+	-- agregar a grupo (user42 y sudo)
+
+grupos
+	-- crear grupo
+
+crear script en bash
+	-- nombre: monitoring.sh
+	-- ejecutar cada 10 mins desde que se inicie el server (wall)
+		- el escript de mostrar:
+			- arquitectura del OS y la version del kernel
+			- numero de nucleos fisicos
+			- numero de nucleos virtuales
+			- la memoria RAM disponible y el porcentaje de uso
+			- la memoria disponible y el porcentaje de uso (HD?)
+			- el porcentaje de uso de los nucleos
+			- fecha y hora del ultimo reinicio
+			- si LVM esta o no activo
+			- numero de conexiones activas
+			- num de usuarios del servidor
+			- la ipv4 y mac del servidor
+			- el numero de commandos ejecutados con sudo
+
+una vez todo configurado en la vm
+	- configurar save state para esa vm en virtual box
+		- esto es para que no se altere la maquina luego de cada uso al realizar las evaluaciones
+	- crear el archivo "signature.txt" con sha1 sobre el archivo .vdi de la vm creada
+		- (sha1sum [vmname].vdi)
