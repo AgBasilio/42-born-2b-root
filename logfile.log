@@ -5,6 +5,7 @@ debian doc:
 https://www.debian.org/doc/
 	-- instalation Guide https://www.debian.org/releases/stable/amd64/ (esp: https://www.debian.org/releases/stable/amd64/index.es.html)
 
+hypervisor
 SELinux
 AppArmor
 LVM
