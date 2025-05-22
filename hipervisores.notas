@@ -1,0 +1,71 @@
+
+La virtualización es una tecnología fundamental en la computación moderna, especialmente relevante en el contexto del cloud computing. Permite la creación de 
+versiones basadas en software de recursos informáticos como servidores, almacenamiento y redes, lo que lleva a una mayor eficiencia y ahorro de costes.
+
+¿Qué es la Virtualización?
+
+Es "el proceso de simulación de hardware y software, como computadoras, sistemas operativos, almacenamiento y redes. Y lo hace en un entorno virtual o de software."
+Es "el proceso de crear una versión basada en software o virtual de algo, ya sea computación, almacenamiento, redes, servidores o aplicaciones".
+Tradicionalmente, las empresas utilizaban servidores físicos dedicados para cada aplicación o servicio, a menudo con diferentes sistemas operativos. La virtualización 
+permite consolidar múltiples de estos servidores físicos en un solo servidor, ejecutando múltiples máquinas virtuales (VM) con diferentes sistemas operativos 
+y aplicaciones de forma simultánea.
+
+Beneficios Clave de la Virtualización:
+
+ - Ahorro de Costes: Al requerir menos servidores físicos, se reducen los gastos en hardware, electricidad y espacio físico. Como se menciona: "ahorra 
+dinero en hardware y electricidad porque una empresa no necesitará tantas máquinas físicas o la energía que se necesita para hacer funcionar esas máquinas."
+ - Agilidad y Velocidad: Es mucho más rápido y sencillo implementar o "levantar" nuevas máquinas virtuales en comparación con la provisión de nuevos servidores físicos.
+ - Reducción del Tiempo de Inactividad y Recuperación ante Desastres: Las máquinas virtuales son portátiles y pueden ser fácilmente trasladadas a diferentes hosts 
+físicos. Esto permite una rápida recuperación en caso de fallo del hardware subyacente. Además, las máquinas virtuales son archivos de software que se pueden respaldar 
+y restaurar en diferentes máquinas.
+ - Utilización Optimizada de Recursos: La virtualización permite aprovechar al máximo la capacidad computacional de los servidores modernos, que a menudo están 
+infrautilizados por una sola aplicación.
+ - Portabilidad: Las máquinas virtuales son archivos de software que se pueden trasladar fácilmente de un host físico a otro.
+ - Aislamiento: Las máquinas virtuales están aisladas entre sí, lo que significa que los problemas o cambios en una VM no afectan a las demás ni al host físico. Esto es 
+crucial para la seguridad.
+
+¿Qué es un Hipervisor?
+
+El hipervisor es la tecnología fundamental que hace posible la virtualización. También conocido como virtual machine manager (VMM), se define como:
+ * "un tipo de software que te permite crear y gestionar máquinas virtuales."
+ * "simplemente una pieza de software que se ejecuta por encima del servidor físico o host".
+ * "software que se ejecuta en un host informático que lo virtualiza."
+El hipervisor juega un papel crucial en:
+ - Virtualización de Recursos: "virtualizando recursos de hardware y componentes del ordenador anfitrión para que las máquinas virtuales puedan ser soportadas por el 
+hardware". Esto implica dividir recursos como CPU, RAM y red en partes virtuales para asignar a las VMs.
+ - Gestión de Recursos: El hipervisor asigna y controla el uso compartido de los recursos del host por parte de las máquinas virtuales.
+ - Aislamiento: Como se mencionó anteriormente, garantiza que las máquinas virtuales funcionen de forma independiente y segura, sin interferir entre sí.
+
+Tipos de Hipervisores:
+
+Dos tipos principales de hipervisores:
+
+Hipervisores Tipo 1 (Bare-Metal o Nativos):
+Se instalan directamente en el hardware físico del servidor, sin un sistema operativo preexistente.
+"Este tipo de hipervisor tiene precedencia sobre el sistema operativo del ordenador anfitrión." "lo que significa que no hay ningún sistema operativo existente 
+ni ningún otro software en la máquina."
+El hipervisor de tipo 1 no es un sistema operativo en el sentido clásico, pero sí asume un rol similar en cuanto a gestión del hardware, enfocado exclusivamente 
+en la virtualización. Algunas implementaciones incluso incluyen un microkernel o componentes mínimos de sistema operativo, pero siguen siendo considerados 
+hipervisores, no sistemas operativos generales.
+Se consideran "extremadamente rápidos" y más eficientes debido a su acceso directo al hardware.
+Son los más utilizados en centros de datos empresariales y para la virtualización de servidores.
+Son generalmente "los más seguros" y tienen una "menor latencia".
+Ejemplos: VMware ESXi, Microsoft Hyper-V, KVM (Kernel-based Virtual Machine) y Citrix XenServer.
+
+Hipervisores Tipo 2 (Alojados):
+Se ejecutan como una aplicación sobre un sistema operativo existente instalado en el host físico.
+"Un hipervisor de tipo 2 se instala y se ejecuta sobre un sistema operativo existente, como Microsoft Windows, MAC OS, Linux, Unix, etc."
+Son "mucho menos eficientes" en comparación con los Tipo 1 debido a la capa adicional del sistema operativo.
+"tienen una mayor latencia que un hipervisor tipo 1".
+Se utilizan comúnmente en ordenadores personales para fines como pruebas de software, ejecución de aplicaciones antiguas o pruebas de diferentes sistemas operativos.
+Ejemplos: VMware Workstation (Pro/Player), Oracle VM VirtualBox, Hyper-v, VMware Fusion (para macOS).
+
+Origen de los Hipervisores:
+Los hipervisores fueron inventados por IBM en la década de 1960, originalmente para su uso en mainframes. Con el auge del cloud computing, otras empresas como 
+VMware, Microsoft y Oracle comenzaron a producir productos de hipervisor para uso doméstico y empresarial.
+
+Conclusión:
+En resumen, los hipervisores son una capa de software esencial que permite la virtualización de los recursos de hardware subyacentes y gestionar múltiples máquinas 
+virtuales aisladas en un único host físico. Existen dos tipos principales, Tipo 1 y Tipo 2, cada uno con sus propias ventajas y casos de uso. La virtualización, 
+habilitada por los hipervisores, ofrece beneficios significativos en términos de ahorro de costes, agilidad, fiabilidad y utilización de recursos, lo que la 
+convierte en una tecnología fundamental para la infraestructura de TI moderna y el cloud computing.

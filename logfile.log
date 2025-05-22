@@ -5,7 +5,12 @@ debian doc:
 https://www.debian.org/doc/
 	-- instalation Guide https://www.debian.org/releases/stable/amd64/ (esp: https://www.debian.org/releases/stable/amd64/index.es.html)
 
-hypervisor
+hypervisor:
+	** Software que permite la virtualización de un servidor físico, 
+	dividiendo sus recursos como CPU, RAM y red. 
+	El propósito principal es permitir que múltiples servidores virtuales operen 
+	simultáneamente en una única máquina física.
+	Es una capa de software que se sitúa encima del host informático y permite gestionar y ejecutar VMs.
 SELinux
 AppArmor
 LVM
