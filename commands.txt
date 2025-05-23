@@ -1,3 +1,13 @@
-command			: 		result
-w				:		Show who is logged on and what they are doing.
-who				:		show who is logged on.
+command			        : 		result
+w				        :		Show who is logged on and what they are doing.
+who				        :		show who is logged on.
+systemctl status ssh    :       status ssh
+systemctl restart ssh   :       restar ssh
+ip a                    :       (short for ip address) is used on Linux to display network interface information. It shows 
+                                details about all available network interfaces on the system
+                                check disponibilidad port:
+linux:
+ss -tuln | grep :<port> :   check disponibilidad del puerto, si no hay respuesta el puerto esta libre
+Win:
+netstat -aon | findstr :<port> : check disponibilidad del puerto, si no hay respuesta el puerto esta libre
+  ej: netstat -aon | findstr :4242)

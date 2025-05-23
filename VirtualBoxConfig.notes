@@ -1,0 +1,16 @@
+ - get the gest's ip address:
+    use the command on gest machine: ip a
+
+port forwarding:
+https://youtu.be/Kq_JOGX0MW4?si=XCZc4LVn318VX7Wd
+    - Shut down the VM.
+    - Open VirtualBox Manager.
+    - Select your VM → Settings → Network → Adapter 1. (deberia ser NAT)
+    - Advanced → Port Forwarding.
+    - Add a rule:
+        - Name: SSH
+        - Protocol: TCP
+        - Host IP: 127.0.0.1
+        - Host Port: 2222 (o uno que este libre)
+        - Guest IP: 10.0.2.15 (ip obtenida en gest con ip a) (optional or leave blank)
+        - Guest Port: 4242 (el puerto en el que este configurado ssh)

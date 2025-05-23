@@ -1,6 +1,12 @@
+pass: Qwerty1234
 archivo log
 
 virtualbox man: https://www.virtualbox.org/manual/topics/Introduction.html#virtintro
+
+host > gest
+ # Host = Máquina física (o el sistema operativo que ejecuta las máquinas virtuales)
+ # Guest = Máquina virtual que corre dentro del host
+
 debian doc:
 https://www.debian.org/doc/
 	-- instalation Guide https://www.debian.org/releases/stable/amd64/ (esp: https://www.debian.org/releases/stable/amd64/index.es.html)
@@ -11,6 +17,11 @@ hypervisor:
 	El propósito principal es permitir que múltiples servidores virtuales operen 
 	simultáneamente en una única máquina física.
 	Es una capa de software que se sitúa encima del host informático y permite gestionar y ejecutar VMs.
+
+Separate /home, /var and /tmp partitions (por que?)
+partition disc -> configure logical volume manager
+use as: journaling file system (ext4 vs ext3 vs ext2) vs btrfs journaling file system vs JFS journaling file system vs XFS journaling file system vs FAT16 vs FAT32 vs swap area vs physical volumen for encriptation
+mount point: srv 
 SELinux
 AppArmor
 LVM
@@ -20,13 +31,33 @@ cron
 configurar particiones
 
 aptitude vs apt
-	-- aptitude
-	-- apt
+	-- aptitude: gestion avanzada de paquetes y resolucion de conflictos. CLI + interfaz visual (modo texto)
+	-- apt: gestor de paquetes basico por defecto en Debian
+	aptitude intalacion: 
+		sudo apt update
+		sudo apt install aptitude
+	entrar en interfaz visual con: 
+		sudo aptitude
+	crear un alias para usar aptitude con el comando apt
+
+que es systemctl? (system control) Utilidad para controlar systemd (system and service manager): provee una interfaz para inspeccionar y controlar
+el estado del sistema.
+systemctl [OPTIONS...] COMMAND [UNIT...]
 
 SSH
+
 	-- como funciona
- -- service on 4242 port
- -- no conectarse como root a travez de SSH
+archivo de configuracion de ssh: 				/etc/ssh/sshd_config
+ -- service on 4242 port: 						Port 4242
+ -- no conectarse como root a travez de SSH: 	PermitRootLogin no
+ (set up port forwarding in Virtualbox)
+ NAT: Network Address Translation
+	allow multiple devices on a private network to share a single public IP address when accessing the internet or communicating outside the local network
+ (check disponibilidad port:
+	linux: ss -tuln | grep :<port>
+				si no hay respuesta el puerto esta libre)
+	netstat -aon | findstr :<port>
+  ej: netstat -aon | findstr :4242)
 
  crear nuevo usuario
 
