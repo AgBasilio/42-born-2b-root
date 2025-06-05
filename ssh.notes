@@ -1,0 +1,4 @@
+config ssh editing /etc/ssh/sshd_config file
+para conectarse:
+ssh [usuario]@[ip] -p [puerto] (-p es para especificar un puerto, sino ira al 22 que es default para ssh)
+ssh abasilio@localhost -p 4242

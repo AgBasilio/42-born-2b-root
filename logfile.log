@@ -18,9 +18,37 @@ hypervisor:
 	simultáneamente en una única máquina física.
 	Es una capa de software que se sitúa encima del host informático y permite gestionar y ejecutar VMs.
 
-Separate /home, /var and /tmp partitions (por que?)
+Separate /home, /var and /tmp partitions
+-- filesystem (FHS Filesystem Hierarchy Standard): https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html
+-- partitioning: https://wiki.archlinux.org/title/Partitioning
+		- Separating out a path as a partition allows for the choice of a different filesystem and mount options. In some cases like a media partition, they can also 
+		be shared between operating systems.
+		- Separating out /home allows / to be re-partitioned separately
+ - estability: the three of them can grow independently without compromising the stability of the system.
+ - security: each can by configured independently to isolate and improve security
+ - performance: different filesystems can be established for each and even mounted on different kinds of drives
+	/		--> root partition. is the top of the hierarchy, the point where the primary filesystem is mounted and from which all other filesystems stem. All files and 
+					directories appear under the root directory /, even if they are stored on different physical devices. The contents of the root filesystem must be 
+					adequate to boot, restore, recover, and/or repair the system. Therefore, certain directories under / are not candidates for separate partitions. The root 
+					partition is necessary and it is the most important. The other partitions can be replaced by it. (https://wiki.archlinux.org/title/Partitioning#/)
+	/boot	--> is not required for normal system operation, but only during boot and kernel upgrades. (https://wiki.archlinux.org/title/Partitioning#/boot)
+	/home 	--> 
+		https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s08.html
+		https://wiki.archlinux.org/title/Partitioning#/home
+	/var	--> /var contains variable data files. If /var cannot be made a separate partition, it is often preferable to move /var out of the root partition and into the /usr 
+		partition (https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05.html). It exists to make it possible to mount /usr as read-only. (https://wiki.archlinux.org/title/Partitioning#/var)
+	/temp	--> The /tmp directory must be made available for programs that require temporary files.
+				Programs must not assume that any files or directories in /tmp are preserved between invocations of the program. (https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s18.html)
+
 partition disc -> configure logical volume manager
-use as: journaling file system (ext4 vs ext3 vs ext2) vs btrfs journaling file system vs JFS journaling file system vs XFS journaling file system vs FAT16 vs FAT32 vs swap area vs physical volumen for encriptation
+use as: journaling file system (ext4)
+	Journaling file system: keeps track of changes not yet committed to the file system's main part (https://en.wikipedia.org/wiki/Journaling_file_system)
+	ext4: 
+		(fourth extended filesystem) is a journaling file system for Linux, developed as the successor to ext3. 
+		ext4 is a journaling file system, meaning it maintains a journal of operations not yet committed to disk, and is able to prevent some amount of data loss after a system crash or 
+		power failure. If an ext4 filesystem is determined "unclean" on boot (traces of remaining operations in the journal), the system will run fsck and attempt to repair the filesystem, 
+		and write uncommited blocks to the lost+found/ directory. At the very least, the filesystem will be restored to a working state.(https://wiki.debian.org/Ext4)
+
 mount point: srv 
 SELinux
 AppArmor
@@ -61,21 +89,27 @@ archivo de configuracion de ssh: 				/etc/ssh/sshd_config
 
  crear nuevo usuario
 
- UFW
+ UFW (Uncomplicated Firewall)
+ 	an application that aims to set rules in "iptables", the native firewall tables in Linux. Since iptables has a relatively complex syntax, 
+	using UFW to configure it is a useful alternative without skimping on security
 	-- what is and how to config: https://www.swhosting.com/en/comunidad/manual/what-is-the-ufw-firewall-and-how-to-configure-it-in-linux
 	-- dejar solo el puerto 4242 abierto
+		- ufw default deny incoming //Denies incoming connections that do not match any rule
+		- default allow outgoing //Allow outgoing connections that do not match any rule
+		- ufw allow 80 // Allow incoming connections through port 80 (in this case port 4242)
+		- ufw enable // activate the firewall and all the rules defined.
 
 hostname: [usr]42
 	-- como modificar el hostname? 
 		--- cortito y al pie: https://www.redhat.com/en/blog/configure-hostname-linux
 		--- mas explicado: https://cyberpanel.net/blog/linux-change-hostname
 
-politica de contrasennas:
+politica de password:
 	-- implementar politica:
 		-- debe expirar cada:									30 	dias
 		-- min dias para antes de modificar una contrasenna:	2 	dias
 		-- antelacion aviso antes de expirar password:			7	dias
-		-- password
+		-- password https://ostechnix.com/how-to-set-password-policies-in-linux/
 			- min:
 				- 10 caracteres
 				- 1 mayus
@@ -85,23 +119,43 @@ politica de contrasennas:
 			- no puede contener el nombre de usuario
 			- (no aplica a root) al menos 7 caracteres no tienen que ser parte de la antigua contrasenna
 
-SUDO
+SUDO (https://wiki.debian.org/es/sudo)
+programa diseñado para facilitar a los administradores del sistema permitir a algunos usuarios ejecutar órdenes como root (u otro usuario). (...) permitir a las personas 
+realizar su trabajo otorgándoles los mínimos privilegios posibles
+
 	-- instalar
+		apt install sudo
 	-- configurar
-		-- reglas
+		- $visudo  : open the config file
+		(El sistema lee los grupos de cada usuario al ingresar por lo que tras añadirle a un grupo el usuario tiene que salir y reingresar para hacer efectiva su nueva membresía.)
+		-- reglas (https://www.geeksforgeeks.org/useful-sudoers-configurations-for-setting-sudo-in-linux/)
 			- autentificacion limitado a 3 intentos con password incorrecta
+				Defaults        passwd_tries=3
 			- mostrar mensaje personalizado al introducir password incorrecto
+				Defaults        badpass_message="bad password. try again, if you can :D"
 			- input y output logged en /var/log/sudo/
+				Defaults        logfile=/var/log/sudo/sudo.log
+				Defaults        log_input
+				Defaults        log_output
+				Defaults        iolog_dir=/var/log/sudo
 			- TTY activado
 				- TTY in Unix is from teletypewriter
+					Defaults        requiretty
 			- los directorios utilizables por sudo deben estar restringidos
+				Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
 usuario
 	-- crear usuario
 	-- agregar a grupo (user42 y sudo)
+	# sudo adduser otrousuario -G sudo //crea el usuario y lo agrega al grupo sudo
 
-grupos
+grupos (https://wiki.debian.org/SystemGroups)
 	-- crear grupo
+		$ groupadd user42 // create a new group
+	- To print the groups for another user: $ groups $username
+	- To add a user to a group, as root: # adduser $username $groupname
+	- as a user with sudo permissions: $ sudo adduser $username $groupname
+	- and using the usermod command: $ sudo usermod -a -G $groupname $username
 
 crear script en bash
 	-- nombre: monitoring.sh

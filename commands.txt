@@ -1,13 +1,32 @@
-command			        : 		result
-w				        :		Show who is logged on and what they are doing.
-who				        :		show who is logged on.
-systemctl status ssh    :       status ssh
-systemctl restart ssh   :       restar ssh
-ip a                    :       (short for ip address) is used on Linux to display network interface information. It shows 
-                                details about all available network interfaces on the system
-                                check disponibilidad port:
-linux:
-ss -tuln | grep :<port> :   check disponibilidad del puerto, si no hay respuesta el puerto esta libre
-Win:
-netstat -aon | findstr :<port> : check disponibilidad del puerto, si no hay respuesta el puerto esta libre
+command:			               z         : 	result:
+w				                              :		Show who is logged on and what they are doing.
+who				                            :		show who is logged on.
+systemctl status ssh                  :       status ssh
+systemctl restart ssh                 :       restar ssh
+ip a                                  :       (short for ip address) is used on Linux to display network interface information. It shows 
+                                                  details about all available network interfaces on the system
+                                                  check disponibilidad 
+port:
+shutdown [OPTIONS...] TIME [WALL...]  :  hatl, poweroff or reboot the machine. Time format: "hh:ss" or "+m", +1 is implied (default)
+halt | poweroff | reboot              :   halt, poweroff or reboot the machine
+exit                                  : (Ctrl + d) log out
+logout
+# linux:
+ss -tuln | grep :<port>               :   check disponibilidad del puerto, si no hay respuesta el puerto esta libre
+# Win:
+netstat -aon | findstr :<port>        : check disponibilidad del puerto, si no hay respuesta el puerto esta libre
   ej: netstat -aon | findstr :4242)
+su [options] [-] [user [argument...]] :   run a command with substitute user and group ID. Default to root
+  #ej:
+    su - usuario
+    su --login usuario
+ufw status                            : show firewall status and rules
+ufw status numbered                   : show firewall status and rules numbered
+ufw delete 3                          : Delete rule number "3"
+ufw enable                            : Activates the firewall and puts into operation all the established rules
+ufw disable                           : Disable (pause) the firewall
+ufw reset                             : Remove all rules and allow you to start from scratch with the exception of the default behavior
+groupadd [OPTIONS] NEWGROUP           : Create a new group
+adduser, addgroup                     : add or manipulate users or groups
+groups [username]                     : show the groups that the user (current user by default) belongs to
+id [OPTION] [USER]                    : print real and effective user and group IDs
