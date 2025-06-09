@@ -98,26 +98,86 @@ archivo de configuracion de ssh: 				/etc/ssh/sshd_config
 		- default allow outgoing //Allow outgoing connections that do not match any rule
 		- ufw allow 80 // Allow incoming connections through port 80 (in this case port 4242)
 		- ufw enable // activate the firewall and all the rules defined.
+	ss -tuln //-t: TCP -u: UDP -l: listening -n: Don't resolve names | check inbound ports
+	sudo ufw status verbose //check ufu status
 
 hostname: [usr]42
 	-- como modificar el hostname? 
 		--- cortito y al pie: https://www.redhat.com/en/blog/configure-hostname-linux
+			$ hostnamectl set-hostname nombre_host_name
+			or directly modify the default configuration file /etc/hostname.
 		--- mas explicado: https://cyberpanel.net/blog/linux-change-hostname
 
-politica de password:
-	-- implementar politica:
-		-- debe expirar cada:									30 	dias
-		-- min dias para antes de modificar una contrasenna:	2 	dias
-		-- antelacion aviso antes de expirar password:			7	dias
-		-- password https://ostechnix.com/how-to-set-password-policies-in-linux/
+politica de password: (https://ostechnix.com/how-to-set-password-policies-in-linux/)
+	-- implementar politica: (/etc/login.defs)
+		-- debe expirar cada:									30 	dias	==> PASS_MAX_DAYS	30
+		-- min dias para antes de modificar una contrasenna:	2 	dias	==> PASS_MIN_DAYS	2
+		-- antelacion aviso antes de expirar password:			7	dias	==> PASS_MAX_DAYS	7 (default)
+		## estos cambios solo aplican a usuarios nuevos, porque login.defs define los valores predeterminados que se utilizan al crear un nuevo usuario.
+			# los usuarios existentes deben modificarse manualmente:
+					(chage - change user password expiry information)
+				- sudo chage -M 30 -m 2 nombre_de_usuario (abasilio | root)
+				- chage -l nombre_de_usuario (abasilio | root)
+           Show account aging information.
+		-- password (/etc/pam.d/common-password) (PAM: Pluggable Authentication Modules)
+					pam_unix.so (man pam_unix.so): the standard Unix authentication module
+				change: password        [success=1 default=ignore]      pam_unix.so obscure yescrypt
+				to:	password        [success=1 default=ignore]      pam_unix.so obscure yescrypt minlen=10
 			- min:
-				- 10 caracteres
-				- 1 mayus
-				- 1 minuscula
-				- 1 numero
-			- No mas de 3 veces consecutivas el mismo caracter
-			- no puede contener el nombre de usuario
-			- (no aplica a root) al menos 7 caracteres no tienen que ser parte de la antigua contrasenna
+				- 10 caracteres	==> minlen=10 (exist for pam_unix.so but since pam_pwquality is already installed it's better to move it)
+				- 1 mayus		==>	 (pkg libpam-pwquality 		==> minclass = 3: require 3 clases (other, upper, lower and digit)) || ucredit=-1
+				- 1 minuscula	==>		'' || lcredit=-1
+				- 1 numero		==>		'' || dcredit=-1
+			- No mas de 3 veces consecutivas el mismo caracter	==>	(pkg libpam-pwquality | pam_pwquality.so ==> maxrepeat = 3)
+			- no puede contener el nombre de usuario			==>	(pkg libpam-pwquality ==> usercheck = 1)
+			- (no aplica a root) al menos 7 caracteres no tienen que ser parte de la antigua contrasenna 	==> difok=7 (no aplica a root. man: 'The module will 
+																														return error on failed check even if the user changing the password 
+																														is root. This option is off by default which means that just the 
+																														message about the failed check is printed but root can change the 
+																														password anyway. Note that root is not asked for an old password so 
+																														the checks that compare the old and new password are not performed')
+		/etc/pam.d/common-password:
+			
+			password requisite pam_pwquality.so retry=3 difok=7 minlen=10 dcredit=-1 ucredit=-1 lcredit=-1 maxrepeat=3 usercheck=1 enforce_for_root
+			password [success=1 default=ignore] pam_unix.so obscure yescrypt
+		
+		(pam_pwquality.so is executed and then, if successful, pam_unix.so is executed)
+		(requisite means: if unsuccessful, abort and do not attempt the following modules)
+		TEST:
+			to short:
+				Pa55word
+				Qwerty1!
+				Abc123
+			no numb:
+				PasswordLong
+				PasswordLong!
+				SecurePassOnly
+				SecureP@ssOnly
+				JustLettersOK
+			no mayus:
+				password123
+				securepass10
+				minimallower10
+			no min:
+				PASSWORD123
+				SECURE456
+				NUMBERSUPPER
+			repeated chars:
+				Aaaabbbb123
+				1111Secure
+				PPPPass123
+			contains user:
+				abasilio1Pass
+				1abasilioP
+				P1abasilio
+			difok=7 (PasswordLong1)
+				PasswordLong2
+				P@sswordLong1
+				P@22W0rDL0 (funciona?)
+			
+			N3wSecure2!
+
+
 
 SUDO (https://wiki.debian.org/es/sudo)
 programa diseñado para facilitar a los administradores del sistema permitir a algunos usuarios ejecutar órdenes como root (u otro usuario). (...) permitir a las personas 
@@ -134,10 +194,12 @@ realizar su trabajo otorgándoles los mínimos privilegios posibles
 			- mostrar mensaje personalizado al introducir password incorrecto
 				Defaults        badpass_message="bad password. try again, if you can :D"
 			- input y output logged en /var/log/sudo/
-				Defaults        logfile=/var/log/sudo/sudo.log
+				Defaults        logfile=/var/log/sudo/sudo.log   ==> summary logs
 				Defaults        log_input
 				Defaults        log_output
 				Defaults        iolog_dir=/var/log/sudo
+					sudoreplay -l -d /var/log/sudo        : list available sessions, to replay one. Then, sudoreplay <tsid>
+					sudoreplay -d /var/log/sudo <tsid>    : replays the output
 			- TTY activado
 				- TTY in Unix is from teletypewriter
 					Defaults        requiretty
@@ -157,6 +219,12 @@ grupos (https://wiki.debian.org/SystemGroups)
 	- as a user with sudo permissions: $ sudo adduser $username $groupname
 	- and using the usermod command: $ sudo usermod -a -G $groupname $username
 
+wall:
+	https://labex.io/tutorials/linux-linux-wall-command-with-practical-examples-423001
+crontab
+	crontab  is  the  program  used  to  install,  deinstall  or  list  the  tables  used  to  drive  the  cron(8)  daemon  in Vixie Cron.
+	crontab - tables for driving cron. A crontab file contains instructions to the cron(8) daemon of the general form: ``run this command at this time on this date''.
+	cron - daemon to execute scheduled commands (Vixie Cron)
 crear script en bash
 	-- nombre: monitoring.sh
 	-- ejecutar cada 10 mins desde que se inicie el server (wall)

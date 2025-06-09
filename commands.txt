@@ -1,4 +1,4 @@
-command:			               z         : 	result:
+command:			                        : 	result:
 w				                              :		Show who is logged on and what they are doing.
 who				                            :		show who is logged on.
 systemctl status ssh                  :       status ssh
@@ -30,3 +30,11 @@ groupadd [OPTIONS] NEWGROUP           : Create a new group
 adduser, addgroup                     : add or manipulate users or groups
 groups [username]                     : show the groups that the user (current user by default) belongs to
 id [OPTION] [USER]                    : print real and effective user and group IDs
+sudoreplay -l -d /var/log/sudo        : list available sessions, to replay one. Then, sudoreplay <tsid>
+sudoreplay -d /var/log/sudo <tsid>    : replays the output
+chage [options] LOGIN                 : change user password expiry information. -M (maximum number of days during which a password is valid) -m (minimum) -l (Show account aging information.)
+passwd [options] [LOGIN]              : change user password
+hostname                              : show or set the system's host name (temporal)
+hostnamectl [OPTIONS...] {COMMAND}    : Control the system hostname
+hostnamectl set-hostname new_host_name: Control the system hostname (static permanente). Cambia el hostname en /etc/hostname
+ss                                    : socket statistics. -l: Listening sockets (inbound) 

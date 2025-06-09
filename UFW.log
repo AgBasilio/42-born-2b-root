@@ -1,0 +1,14 @@
+Netid                 State                  Recv-Q                 Send-Q                                 Local Address:Port                                 Peer Address:Port                 Process
+udp                   UNCONN                 0                      0                                            0.0.0.0:68                                        0.0.0.0:*
+tcp                   LISTEN                 0                      128                                          0.0.0.0:4242                                      0.0.0.0:*                                            
+tcp                   LISTEN                 0                      128                                             [::]:4242                                         [::]:*
+
+Port 68/UDP is used by the DHCP client to receive IP address configuration from a DHCP server (usually during boot or when acquiring an IP).
+    * UDP port 67 → used by the DHCP server
+    * UDP port 68 → used by the DHCP client (your machine)
+The machine is listening for DHCP replies from the server.
+UFW rules apply after the packet reaches the network stack, but some traffic like DHCP is considered local/system-level and is usually allowed implicitly — especially:
+    * Outbound-initiated replies (like DHCP, DNS)
+    * Local services needed for basic network functioning
+Port 68 is not listening in the conventional sense of accepting arbitrary connections — it's waiting for solicited replies. (It's not an open inbound port in the sense that a remote host can just connect to it.)
+UFW's "deny (incoming)" still blocks unsolicited incoming packets — replies to things like DHCP or DNS are state-tracked and allowed.
