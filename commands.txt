@@ -38,3 +38,4 @@ hostname                              : show or set the system's host name (temp
 hostnamectl [OPTIONS...] {COMMAND}    : Control the system hostname
 hostnamectl set-hostname new_host_name: Control the system hostname (static permanente). Cambia el hostname en /etc/hostname
 ss                                    : socket statistics. -l: Listening sockets (inbound) 
+whatis                                : imprime una descripción de una sola línea de cualquier otro comando
