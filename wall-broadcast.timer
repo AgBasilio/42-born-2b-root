@@ -1,0 +1,9 @@
+[Unit]
+Description=Run on boot and then every 10 minutes
+
+[Timer]
+OnBootSec=0             #run after boot (actually after execute systemd, but should be the first task)
+OnUnitActiveSec=10min   #every 10 minutes after activation.
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Send message to all users
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/test.sh

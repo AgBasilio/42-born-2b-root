@@ -29,11 +29,20 @@ Comandos para el procesamiento de textos:
 How to Check CPU and Memory Usage in Debian 12 Bookworm: https://www.siberoloji.com/how-to-check-cpu-and-memory-usage-in-debian-12/#1-checking-cpu-usage
 
 sysstat https://wiki.debian.org/sysstat
+grep https://es.wikipedia.org/wiki/Grep
 
 How to Use systemd Timers Instead of Cron in Debian 12 Bookworm
-https://www.siberoloji.com/how-to-use-systemd-timers-instead-of-cron-in-debian-12-bookworm/
-    systemctl list-timers, to see the active timers
+    https://www.siberoloji.com/how-to-use-systemd-timers-instead-of-cron-in-debian-12-bookworm/
+        - $ systemctl list-timers  //to see the active timers
+        - $ man 5 systemd.timer
+        - Use descriptive unit names and place them in /etc/systemd/system/
+            or ~/.config/systemd/user/ (for user context)
+Understanding Systemd Units and Unit Files: 
+    https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+- $ sudo systemctl daemon-reload
+- $ sudo systemctl enable --now wall-broadcast.timer
+
 
 check if systemd is pid 1 (check if systemd is the default init system. If so, should be pid=1)
-    ps -p 1 -o comm=
-        should respond systemd if it is 
+    $ ps -p 1 -o comm=
+        should respond "systemd" if it is

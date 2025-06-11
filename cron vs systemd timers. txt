@@ -1,0 +1,33 @@
+| Característica                   | `cron`                                                        | `systemd` + `systemd-timer`                                        |
+| -------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 🛠️ Instalación                  | Instalado por defecto en casi todos los Linux                 | Disponible en sistemas con `systemd`                               |
+| 📆 Precisión de tiempo           | Solo puede ejecutar tareas en horarios fijos                  | Soporta tareas relativas (ej: "5 min después de boot")             |
+| 🔁 Repeticiones flexibles        | Sí, con formato tipo `* * * * *`                              | Sí, con `OnCalendar`, `OnBootSec`, etc.                            |
+| ⚙️ Gestión de servicios          | No puede activar servicios directamente                       | Puede ejecutar servicios (`.service`)                              |
+| 🔍 Logging (registro de errores) | Limitado (salida al mail del usuario o redirigir manualmente) | Usa `journalctl`, con logs detallados                              |
+| ❌ Control de errores / fallos    | Básico (poca gestión de fallos o reinicios)                   | Puede reiniciar tareas automáticamente, o retrasar                 |
+| 👤 Usuario                       | Cada usuario puede tener su propio `crontab`                  | Los usuarios pueden definir sus propios timers (requiere permisos) |
+| 🔒 Seguridad y aislamiento       | Menos aislamiento y control de recursos                       | Mejor integración con cgroups, límites, sandboxing                 |
+
+from man:
+    For each timer file, a matching unit file must exist, describing the unit to activate when the timer elapses. By default, a service by the same name as the timer (except for the suffix) is activated. Example: a timer
+       file foo.timer activates a matching service foo.service. The unit to activate may be controlled by Unit= (see below).
+ejemplo
+archivo: tarea.service
+[Unit]
+Description=Monitoring script
+
+[Service]
+Type=oneshot
+ExecStart=/ruta/a/mi/script.sh
+
+archivo: tarea.timer
+[Unit]
+description=Execute monitoring.sh script on start and every 10 minutes
+[Timer]
+OnCalendar=*:0/10  #--> e ejecuta cada 10 minutos 
+Persistent=true    #--> "Si la máquina estaba apagada y se perdió una ejecución programada, ejecutá la tarea apenas sea posible al arrancar."
+
+[Timer]
+OnBootSec=0             #run after boot (actually after execute systemd, but should be the first task)
+OnUnitActiveSec=10min   #every 10 minutes after the previous line.

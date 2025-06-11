@@ -247,3 +247,6 @@ una vez todo configurado en la vm
 		- esto es para que no se altere la maquina luego de cada uso al realizar las evaluaciones
 	- crear el archivo "signature.txt" con sha1 sobre el archivo .vdi de la vm creada
 		- (sha1sum [vmname].vdi)
+
+
+comando generales para tener en cuenta: https://kinsta.com/es/blog/linux-comandos/
