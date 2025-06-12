@@ -1,0 +1,4 @@
+MOTD (Message of the Day)
+https://wiki.debian.org/motd
+
+/etc/motd : contains static text shown at login

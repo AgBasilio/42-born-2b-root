@@ -40,3 +40,4 @@ hostnamectl set-hostname new_host_name: Control the system hostname (static perm
 ss                                    : socket statistics. -l: Listening sockets (inbound) 
 systemctl list-timers                 : 
 whatis                                : very short description of a command // display one-line manual page descriptions
+journalctl                            : show systemd logs. -b: from a specific boot. -u messages from a specific unit

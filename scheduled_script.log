@@ -33,7 +33,17 @@ grep https://es.wikipedia.org/wiki/Grep
 
 How to Use systemd Timers Instead of Cron in Debian 12 Bookworm
     https://www.siberoloji.com/how-to-use-systemd-timers-instead-of-cron-in-debian-12-bookworm/
-        - $ systemctl list-timers  //to see the active timers
+        - $ systemctl list-timers                           //to see the active timers
+        - $ systemctl status wall-broadcast.timer           // check timer status
+        - $ sudo systemctl start wall-broadcast.service     //test script
+        - # on changes:
+            $ sudo systemctl daemon-reload
+            # if [Install] section changed
+                - $ sudo systemctl enable wall-broadcast.timer
+            sudo systemctl restart wall-broadcast.timer     //restart the timer
+        - to stop it:
+            sudo systemctl stop wall-broadcast.timer            //stop for this run but will execute again on the boot
+            sudo systemctl disable --now wall-broadcast.timer   // now stops it immediately and prevent execution on reboot
         - $ man 5 systemd.timer
         - Use descriptive unit names and place them in /etc/systemd/system/
             or ~/.config/systemd/user/ (for user context)
