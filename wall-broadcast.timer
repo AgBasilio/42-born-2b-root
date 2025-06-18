@@ -1,10 +1,11 @@
 #/etc/systemd/system/
 [Unit]
-Description=Run on boot and then every 10 minutes
+Description=every 10 minutes
 
 [Timer]
-#OnBootSec=0             #run inmmediately after boot (actually after execute systemd, but should be the first task)
+OnBootSec=0             #run inmmediately after boot (actually after execute systemd, but should be the first task)
 OnUnitActiveSec=10min   #then every 10 minutes.
+Persistent=true
 
 [Install]
 WantedBy=timers.target
