@@ -41,3 +41,6 @@ ss                                    : socket statistics. -l: Listening sockets
 systemctl list-timers                 : 
 whatis                                : very short description of a command // display one-line manual page descriptions
 journalctl                            : show systemd logs. -b: from a specific boot. -u messages from a specific unit
+findmnt                               : findmnt will list all mounted filesystems or search for a filesystem. | findmnt -D (Imitate the output of df)
+findmnt --real                        : Print only real filesystems.
+lsblk                                 : list block devices. lists information about all available or the specified block devices.

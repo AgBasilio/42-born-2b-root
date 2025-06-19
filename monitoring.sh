@@ -18,10 +18,18 @@ text="$text#Memory Usage: $mem_used/${mem_total}MB ($mem_ratio%) \n"
 # }' ) \n"
 text="$text#Disk Usage: $(df -BG -H --total | grep total | awk '{printf "%.2f/%.0fGB (%s)", $3, $2, $5}')\n"
 text="$text#CPU load: $(mpstat | awk '/all/ {printf "%.2f%%", 100-$13}')\n"
-#Last boot: $who \n
+text="$text#Last boot: $(who -b | awk '{print $3 " " $4}')\n"
 #LVM use: $algo \n Si LVM está activo o no.
-#TCP Connections : $(ss -t) \n El número de conexiones activas.
+# [ "$(lsblk -o TYPE | grep -c lvm)" -gt 0 ] && echo "yes" || echo "no"
+# lsblk -o TYPE | grep -q '^lvm$' && echo "yes" || echo "no"
+# && means: Run the next command only if the previous command succeeded (exit code 0).
+# look for exactly lvm '^lvm$' --> ^ marca el inicio, $ marca el fin de la palabra
+text="$text#LVM use: $(lsblk -o TYPE | grep -q '^lvm$' && printf "yes" || printf "no")\n"
+text="$text#TCP Connections : $(ss -s | awk '/TCP:/ {print $4}' | tr -d ,) \n"
 #User log: $w \n El número de usuarios del servidor/
+# w | head -n 1 | awk '{print $4}'
+# who | wc -l
+text="$text#User log: $(who | wc -l)\n"
 #Network: $ip address \n La dirección IPv4 de tu servidor y su MAC (Media Access Control)
 #Sudo : $ss \n El número de comandos ejecutados con sudo."
 

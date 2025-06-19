@@ -29,6 +29,7 @@ Comandos para el procesamiento de textos:
     https://persoal.citius.usc.es/tf.pena/ASR/Tema_2html/node23.html 
 
 How to Check CPU and Memory Usage in Debian 12 Bookworm: https://www.siberoloji.com/how-to-check-cpu-and-memory-usage-in-debian-12/#1-checking-cpu-usage
+check LVM use: https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm 
 
 sysstat https://wiki.debian.org/sysstat
 grep https://es.wikipedia.org/wiki/Grep

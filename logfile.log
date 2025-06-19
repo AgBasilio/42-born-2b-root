@@ -49,10 +49,10 @@ use as: journaling file system (ext4)
 		power failure. If an ext4 filesystem is determined "unclean" on boot (traces of remaining operations in the journal), the system will run fsck and attempt to repair the filesystem, 
 		and write uncommited blocks to the lost+found/ directory. At the very least, the filesystem will be restored to a working state.(https://wiki.debian.org/Ext4)
 
-mount point: srv 
+mount point: srv (When you install services like apache and ftp servers from rpms the default directory is /srv. Leave it there, but don't bother partitioning for it on a workstation (https://www.linuxquestions.org/questions/linux-newbie-8/what-is-the-srv-partition-and-do-i-need-one-227168/))
 SELinux
 AppArmor
-LVM
+LVM (https://wiki.archlinux.org/title/LVM)
 	- (al menos dos particiones cifradas)
 wall
 cron
