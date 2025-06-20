@@ -26,13 +26,15 @@ shebang (o "hashbang"), le dice al sistema con qué programa debe ejecutar el sc
 probar: Neofetch es una herramienta CLI (command-line interface) que muestra información sobre tu sistema -como la versión del kernel, el shell y el hardware- junto a un logotipo ASCII de tu distribución de Linux:
 
 Comandos para el procesamiento de textos:
-    https://persoal.citius.usc.es/tf.pena/ASR/Tema_2html/node23.html 
+    https://persoal.citius.usc.es/tf.pena/ASR/Tema_2html/node23.html
+grep https://es.wikipedia.org/wiki/Grep
+
+sysstat https://wiki.debian.org/sysstat
 
 How to Check CPU and Memory Usage in Debian 12 Bookworm: https://www.siberoloji.com/how-to-check-cpu-and-memory-usage-in-debian-12/#1-checking-cpu-usage
 check LVM use: https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm 
-
-sysstat https://wiki.debian.org/sysstat
-grep https://es.wikipedia.org/wiki/Grep
+check tcp stablished connections https://serverfault.com/questions/646729/get-number-of-tcp-established-connections
+show ip address: https://www.siberoloji.com/how-to-check-and-configure-ip-addresses-in-debian-12-bookworm/
 
 How to Use systemd Timers Instead of Cron in Debian 12 Bookworm
     https://www.siberoloji.com/how-to-use-systemd-timers-instead-of-cron-in-debian-12-bookworm/

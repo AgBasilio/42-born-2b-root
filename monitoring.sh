@@ -25,13 +25,15 @@ text="$text#Last boot: $(who -b | awk '{print $3 " " $4}')\n"
 # && means: Run the next command only if the previous command succeeded (exit code 0).
 # look for exactly lvm '^lvm$' --> ^ marca el inicio, $ marca el fin de la palabra
 text="$text#LVM use: $(lsblk -o TYPE | grep -q '^lvm$' && printf "yes" || printf "no")\n"
+# awk  </proc/net/tcp 'BEGIN{t=0};{if ($4 == "01") {t++;}};END{print t}'
 text="$text#TCP Connections : $(ss -s | awk '/TCP:/ {print $4}' | tr -d ,) \n"
 #User log: $w \n El número de usuarios del servidor/
 # w | head -n 1 | awk '{print $4}'
 # who | wc -l
 text="$text#User log: $(who | wc -l)\n"
-#Network: $ip address \n La dirección IPv4 de tu servidor y su MAC (Media Access Control)
-#Sudo : $ss \n El número de comandos ejecutados con sudo."
+text="$text#Network: IP $(hostname -I | awk '{print $1}')"
+text="$text ($(ip addr show | awk '/link.ether/ {print $2}'))\n"
+text="$text#Sudo : $(sudo journalctl _COMM=sudo | grep -c COMMAND=) cmd \n"
 
 #wall -n $text
 echo -e $text | wall
