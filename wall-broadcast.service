@@ -4,4 +4,5 @@ Description=Send message to all users
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/test.sh
+#ExecStart=/usr/local/bin/test.sh
+ExecStart=/usr/local/bin/monitoring.sh

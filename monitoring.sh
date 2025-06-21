@@ -3,7 +3,7 @@
 
 text="#Architecture: $(uname -a) \n"
 text="$text#CPU physical: $(lscpu | grep Socket | awk '{print $2}') \n"
-text="$text#vCPU: $nproc \n"
+text="$text#vCPU: $(nproc) \n"
 
 mem_total=$(free --mega | grep Mem | awk '{print $2}')
 mem_used=$(free --mega | grep Mem | awk '{print $3}')
@@ -26,7 +26,7 @@ text="$text#Last boot: $(who -b | awk '{print $3 " " $4}')\n"
 # look for exactly lvm '^lvm$' --> ^ marca el inicio, $ marca el fin de la palabra
 text="$text#LVM use: $(lsblk -o TYPE | grep -q '^lvm$' && printf "yes" || printf "no")\n"
 # awk  </proc/net/tcp 'BEGIN{t=0};{if ($4 == "01") {t++;}};END{print t}'
-text="$text#TCP Connections : $(ss -s | awk '/TCP:/ {print $4}' | tr -d ,) \n"
+text="$text#TCP Connections : $(ss -s | awk '/TCP:/ {print $4}' | tr -d ,) ESTABLISHED \n"
 #User log: $w \n El número de usuarios del servidor/
 # w | head -n 1 | awk '{print $4}'
 # who | wc -l
@@ -35,5 +35,5 @@ text="$text#Network: IP $(hostname -I | awk '{print $1}')"
 text="$text ($(ip addr show | awk '/link.ether/ {print $2}'))\n"
 text="$text#Sudo : $(sudo journalctl _COMM=sudo | grep -c COMMAND=) cmd \n"
 
-#wall -n $text
+#wall $text
 echo -e $text | wall

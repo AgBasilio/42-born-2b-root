@@ -35,6 +35,9 @@ How to Check CPU and Memory Usage in Debian 12 Bookworm: https://www.siberoloji.
 check LVM use: https://askubuntu.com/questions/202613/how-do-i-check-whether-i-am-using-lvm 
 check tcp stablished connections https://serverfault.com/questions/646729/get-number-of-tcp-established-connections
 show ip address: https://www.siberoloji.com/how-to-check-and-configure-ip-addresses-in-debian-12-bookworm/
+show logs:
+    https://unix.stackexchange.com/questions/167935/details-about-sudo-commands-executed-by-all-user
+    
 
 How to Use systemd Timers Instead of Cron in Debian 12 Bookworm
     https://www.siberoloji.com/how-to-use-systemd-timers-instead-of-cron-in-debian-12-bookworm/
@@ -45,7 +48,7 @@ How to Use systemd Timers Instead of Cron in Debian 12 Bookworm
             $ sudo systemctl daemon-reload
             # if [Install] section changed
                 - $ sudo systemctl enable wall-broadcast.timer
-            sudo systemctl restart wall-broadcast.timer     //restart the timer
+            $ sudo systemctl restart wall-broadcast.timer     //restart the timer
         - to stop it:
             sudo systemctl stop wall-broadcast.timer            //stop for this run but will execute again on the boot
             sudo systemctl disable --now wall-broadcast.timer   // now stops it immediately and prevent execution on reboot
