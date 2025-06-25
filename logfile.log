@@ -37,7 +37,7 @@ Separate /home, /var and /tmp partitions
 		https://wiki.archlinux.org/title/Partitioning#/home
 	/var	--> /var contains variable data files. If /var cannot be made a separate partition, it is often preferable to move /var out of the root partition and into the /usr 
 		partition (https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05.html). It exists to make it possible to mount /usr as read-only. (https://wiki.archlinux.org/title/Partitioning#/var)
-	/temp	--> The /tmp directory must be made available for programs that require temporary files.
+	/tmp	--> The /tmp directory must be made available for programs that require temporary files.
 				Programs must not assume that any files or directories in /tmp are preserved between invocations of the program. (https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s18.html)
 
 partition disc -> configure logical volume manager
@@ -50,12 +50,15 @@ use as: journaling file system (ext4)
 		and write uncommited blocks to the lost+found/ directory. At the very least, the filesystem will be restored to a working state.(https://wiki.debian.org/Ext4)
 
 mount point: srv (When you install services like apache and ftp servers from rpms the default directory is /srv. Leave it there, but don't bother partitioning for it on a workstation (https://www.linuxquestions.org/questions/linux-newbie-8/what-is-the-srv-partition-and-do-i-need-one-227168/))
-SELinux
-AppArmor
-LVM (https://wiki.archlinux.org/title/LVM)
-	- (al menos dos particiones cifradas)
-wall
-cron
+seguridad de aplicaciones:
+	- SELinux (https://www.redhat.com/en/topics/linux/what-is-selinux) SELinux defines access controls for the applications, processes, and files on a system. It uses security policies, which are a set of rules that tell SELinux what can or can’t be accessed, to enforce the access allowed by a policy. 
+	- AppArmor: (AppArmor es una alternativa a SELinux)(https://apparmor.net/) AppArmor is an effective and easy-to-use Linux application security system. Many Linux distributions (e.g. Debian, Ubuntu, OpenSUSE) ship with AppArmor.(aa-status to check it)
+LVM (https://wiki.archlinux.org/title/LVM) Logical Volume Management. Logical Volume Management utilizes the kernel's device-mapper feature to provide a system of partitions independent of underlying disk layout. With LVM you abstract your storage and have "virtual partitions", making extending/shrinking easier
+
+wall (https://manpages.debian.org/unstable/bsdutils/wall.1.en.html) write a message to all users
+cron (https://wiki.debian.org/cron) Time-based job scheduling. 
+	- Systemd timers are a totally different method for time-based process scheduling. The biggest difference is that systemd timers run independently to each other, probably causing all timers to fire simultaneously unless features like ?RandomizeDelaySec is used, and the jobs run in random order. The output of a systemd timer is not e-mailed, but goes into the journal. 
+
 configurar particiones
 
 aptitude vs apt
@@ -66,18 +69,22 @@ aptitude vs apt
 		sudo apt install aptitude
 	entrar en interfaz visual con: 
 		sudo aptitude
-	crear un alias para usar aptitude con el comando apt
+	crear un alias para usar aptitude con el comando apt (no recomendado)
 
 que es systemctl? (system control) Utilidad para controlar systemd (system and service manager): provee una interfaz para inspeccionar y controlar
 el estado del sistema.
 systemctl [OPTIONS...] COMMAND [UNIT...]
 
-SSH
+SSH (https://wiki.debian.org/es/SSH) Secure Shell es un protocolo para acceso remoto seguro y otros servicios de red seguros sobre una red insegura1
+	ssh_config : archivo de configuración del cliente
+	sshd_config : archivo de configuración del servidor
 
 	-- como funciona
 archivo de configuracion de ssh: 				/etc/ssh/sshd_config
- -- service on 4242 port: 						Port 4242
- -- no conectarse como root a travez de SSH: 	PermitRootLogin no
+	- edit file
+ 		-- service on 4242 port: 						Port 4242
+ 		-- no conectarse como root a travez de SSH: 	PermitRootLogin no
+ 
  (set up port forwarding in Virtualbox)
  NAT: Network Address Translation
 	allow multiple devices on a private network to share a single public IP address when accessing the internet or communicating outside the local network
@@ -94,18 +101,18 @@ archivo de configuracion de ssh: 				/etc/ssh/sshd_config
 	using UFW to configure it is a useful alternative without skimping on security
 	-- what is and how to config: https://www.swhosting.com/en/comunidad/manual/what-is-the-ufw-firewall-and-how-to-configure-it-in-linux
 	-- dejar solo el puerto 4242 abierto
-		- ufw default deny incoming //Denies incoming connections that do not match any rule
-		- default allow outgoing //Allow outgoing connections that do not match any rule
-		- ufw allow 80 // Allow incoming connections through port 80 (in this case port 4242)
-		- ufw enable // activate the firewall and all the rules defined.
-	ss -tuln //-t: TCP -u: UDP -l: listening -n: Don't resolve names | check inbound ports
-	sudo ufw status verbose //check ufu status
+		- ufw default deny incoming 	// Denies incoming connections that do not match any rule
+		- default allow outgoing 		// Allow outgoing connections that do not match any rule
+		- ufw allow 4242 				// Allow incoming connections through port [port_num] (in this case port 4242)
+		- ufw enable					// activate the firewall and all the rules defined.
+	ss -tuln //-t: TCP -u: UDP -l: lis	ening -n: Don't resolve names | check inbound ports
+	# sudo ufw status verbose //check ufu status
 
 hostname: [usr]42
 	-- como modificar el hostname? 
-		--- cortito y al pie: https://www.redhat.com/en/blog/configure-hostname-linux
-			$ hostnamectl set-hostname nombre_host_name
-			or directly modify the default configuration file /etc/hostname.
+		--- cortito y al pie: (https://www.redhat.com/en/blog/configure-hostname-linux) To persistently change the hostname, use the hostnamectl command, or directly modify the default configuration file /etc/hostname.
+				* 	$ hostnamectl set-hostname nombre_host_name
+				*	or directly modify the default configuration file /etc/hostname.
 		--- mas explicado: https://cyberpanel.net/blog/linux-change-hostname
 
 politica de password: (https://ostechnix.com/how-to-set-password-policies-in-linux/)
@@ -175,7 +182,7 @@ politica de password: (https://ostechnix.com/how-to-set-password-policies-in-lin
 				P@sswordLong1
 				P@22W0rDL0 (funciona? si)
 			
-			N3wSecure2!
+			NewSecure2!
 
 
 
@@ -241,6 +248,15 @@ crear script en bash
 			- num de usuarios del servidor
 			- la ipv4 y mac del servidor
 			- el numero de commandos ejecutados con sudo
+
+descargar VM:
+	- descargar en sgoinfre
+	- cambiar el portfordwarding de 4242 (que ya esta ocupado) a 4243
+	- cambiar las passwords
+		- usr NewSecure2!
+		- root NewSecure1!
+	- hacer snapshot
+
 
 una vez todo configurado en la vm
 	- configurar save state para esa vm en virtual box
