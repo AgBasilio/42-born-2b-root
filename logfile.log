@@ -105,7 +105,7 @@ archivo de configuracion de ssh: 				/etc/ssh/sshd_config
 		- default allow outgoing 		// Allow outgoing connections that do not match any rule
 		- ufw allow 4242 				// Allow incoming connections through port [port_num] (in this case port 4242)
 		- ufw enable					// activate the firewall and all the rules defined.
-	ss -tuln //-t: TCP -u: UDP -l: lis	ening -n: Don't resolve names | check inbound ports
+	ss -tulnp //-t: TCP -u: UDP -l: lis	ening -n: Don't resolve names | check inbound ports
 	# sudo ufw status verbose //check ufu status
 
 hostname: [usr]42
@@ -255,6 +255,7 @@ descargar VM:
 	- cambiar las passwords
 		- usr NewSecure2!
 		- root NewSecure1!
+	- cambiar en el script el numero de nucleos
 	- hacer snapshot
 
 
