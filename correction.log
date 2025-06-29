@@ -1,0 +1,78 @@
+@ check no groph interphase:
+	ls /usr/bin/*session
+		should only show: /usr/bin/dbus-run-session
+	Check your current session type (works on systemd systems):
+		loginctl show-session $(loginctl | grep $(whoami) | awk '{print $1}') -p Type
+@ check UFW:
+	sudo ufw status
+@ check SSH service
+	sudo service ssh status
+@ check OS
+	uname -v
+@ check groups:
+	id <username>
+	groups <username>
+	cat /etc/group | to show all the groups
+@ add user:
+	sudo adduser <username>
+@ add group:
+	sudo addgroup <groupname>
+@ add user to a group:
+	sudo adduser <username> <usergroup>
+@check hostname
+	hostname
+@change hostname:
+	change only current session: hostname newname
+	change it permanently: sudo hostnamectl set-hostname <newname>
+		equivalent to edit: /etc/hostname
+	then edit /etc/hosts
+	reboot
+	check again command: hostname
+@check partitions:
+	lsblk
+@check sudo
+	which sudo
+@add user to sudoers:
+	sudo adduser <username> <group name = sudo>
+@check sudo rules:
+	sudo visudo
+		default to /etc/sudoers
+	cat /etc/sudoers.d/sudo_config
+@check sudo logs:
+	check path /val/log/sudo exist: sudo -s then cd /var/log/sudo
+	check if there is some files: ls
+	check if something loged: cat sudo.log
+	sudoreplay -l -d /var/log/sudo
+	sudoreplay -d /var/log/sudo <tsid>
+@UFW advanced check:
+		sudo service ufw status
+	@check ufw active rules:
+		sudo ufw status <numbered/verbose>
+	@check rule creation:
+		sudo ufw allow/deny port/protocol
+			ufw allow 8080
+	@check rule deletion:
+		sudo ufw delete <prefix/rule number>
+			ufw delete allow 8080
+@advanced check SSH:
+	sudo service ssh status
+	@try to connect with ssh using root user
+		@ssh root@localhost -p <nat port>
+			should NOT work
+		@ssh newuser@localhost -p <nat port>
+			should work
+@crontab
+	if using crontab check:
+		sudo crontab -u root -e
+			change /10 to /1
+	if using systemd-timers:
+		change /etc/systemd/system/<servicename.timer>
+		sudo systemctl daemon-reload
+		sudo systemctl restart wall-broadcast.timer
+	@stop it:
+		sudo systemctl disable --now wall-broadcast.timer
+
+
+
+
+ss -tulnp | grep ssh

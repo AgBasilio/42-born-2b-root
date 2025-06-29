@@ -60,6 +60,7 @@ cron (https://wiki.debian.org/cron) Time-based job scheduling.
 	- Systemd timers are a totally different method for time-based process scheduling. The biggest difference is that systemd timers run independently to each other, probably causing all timers to fire simultaneously unless features like ?RandomizeDelaySec is used, and the jobs run in random order. The output of a systemd timer is not e-mailed, but goes into the journal. 
 
 configurar particiones
+	lsblk
 
 aptitude vs apt
 	-- aptitude: gestion avanzada de paquetes y resolucion de conflictos. CLI + interfaz visual (modo texto)
@@ -194,6 +195,7 @@ realizar su trabajo otorgándoles los mínimos privilegios posibles
 		apt install sudo
 	-- configurar
 		- $visudo  : open the config file
+			// modifica el archivo por defecto: /etc/sudoers
 		(El sistema lee los grupos de cada usuario al ingresar por lo que tras añadirle a un grupo el usuario tiene que salir y reingresar para hacer efectiva su nueva membresía.)
 		-- reglas (https://www.geeksforgeeks.org/useful-sudoers-configurations-for-setting-sudo-in-linux/)
 			- autentificacion limitado a 3 intentos con password incorrecta
